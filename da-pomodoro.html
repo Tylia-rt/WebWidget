@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA Pomodoro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0B0E1A;
+    color: #F6F3EE;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 12px;
+  }
+  .mode {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #E8A598;
+    margin-bottom: 10px;
+    opacity: 0.75;
+    transition: color 0.4s;
+  }
+  .mode.break { color: #58C89A; }
+  .timer {
+    font-size: 54px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: #F6F3EE;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 18px;
+    transition: color 0.4s;
+    line-height: 1;
+  }
+  .timer.break { color: #58C89A; }
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  button {
+    background: none;
+    border: 1px solid rgba(246,243,238,0.25);
+    color: rgba(246,243,238,0.6);
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.2s;
+  }
+  button:hover { border-color: #E8A598; color: #E8A598; }
+  #btn-start {
+    border-color: rgba(232,165,152,0.7);
+    color: #E8A598;
+    padding: 5px 22px;
+  }
+  #btn-start:hover { border-color: #E8A598; }
+  .sessions {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,165,152,0.35);
+    background: transparent;
+    transition: all 0.3s;
+  }
+  .dot.done { background: #E8A598; border-color: #E8A598; }
+  .sub {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(246,243,238,0.25);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mode" id="lbl">· FOCUS ·</div>
+  <div class="timer" id="tmr">25:00</div>
+  <div class="controls">
+    <button id="btn-start" onclick="toggle()">START</button>
+    <button onclick="reset()">RESET</button>
+    <button onclick="skip()">SKIP</button>
+  </div>
+  <div class="sessions" id="dots">
+    <div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="sub" id="sub">session 1 / 4</div>
+</div>
+<script>
+const M = [
+  { label:'· FOCUS ·',        s:25*60, brk:false },
+  { label:'· PAUSE ·',        s:5*60,  brk:true  },
+  { label:'· GRANDE PAUSE ·', s:20*60, brk:true  },
+];
+let mi=0, rem=M[0].s, run=false, iv=null, done=0;
+const pad = n => n.toString().padStart(2,'0');
+
+function render(){
+  const m=Math.floor(rem/60), s=rem%60;
+  document.getElementById('tmr').textContent=`${pad(m)}:${pad(s)}`;
+  document.getElementById('tmr').className='timer'+(M[mi].brk?' break':'');
+  document.getElementById('lbl').textContent=M[mi].label;
+  document.getElementById('lbl').className='mode'+(M[mi].brk?' break':'');
+  document.getElementById('btn-start').textContent=run?'PAUSE':'START';
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('done', i < done%4);
+  });
+  const cur = mi===0 ? (done%4)+1 : done%4;
+  document.getElementById('sub').textContent=`session ${Math.min(cur,4)} / 4`;
+}
+
+function toggle(){
+  if(run){ clearInterval(iv); run=false; }
+  else {
+    run=true;
+    iv=setInterval(()=>{
+      if(rem>0){ rem--; render(); }
+      else{ clearInterval(iv); run=false; next(); }
+    },1000);
+  }
+  render();
+}
+
+function next(){
+  if(mi===0){ done++; mi=(done%4===0)?2:1; }
+  else{ mi=0; }
+  rem=M[mi].s; render();
+}
+
+function reset(){
+  clearInterval(iv); run=false; mi=0; rem=M[0].s; done=0; render();
+}
+
+function skip(){
+  clearInterval(iv); run=false; next(); render();
+}
+
+render();
+</script>
+</body>
+</html>
