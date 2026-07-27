@@ -23,14 +23,16 @@
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    padding: 18px 28px;
+    padding: clamp(10px, 3vw, 18px) clamp(14px, 5vw, 28px);
+    width: calc(100% - 16px);
+    max-width: 260px;
     background: #0B0E1A;
     border-radius: 12px;
     border: 1px solid rgba(246,243,238,0.07);
     box-shadow: 0 4px 24px rgba(0,0,0,0.35);
   }
   .time {
-    font-size: 46px;
+    font-size: clamp(22px, 9vw, 46px);
     font-weight: 400;
     letter-spacing: 0.05em;
     font-variant-numeric: tabular-nums;
@@ -45,8 +47,8 @@
     50% { opacity: 0.25; }
   }
   .date {
-    font-size: 9px;
-    letter-spacing: 0.22em;
+    font-size: clamp(6px, 1.6vw, 9px);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #E8A598;
     opacity: 0.8;

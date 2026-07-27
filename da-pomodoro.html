@@ -23,37 +23,41 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: 18px 20px;
+    padding: clamp(12px, 3vw, 18px) clamp(12px, 4vw, 20px);
+    width: calc(100% - 16px);
+    max-width: 300px;
     background: #0B0E1A;
     border-radius: 12px;
     border: 1px solid rgba(246,243,238,0.07);
     box-shadow: 0 4px 24px rgba(0,0,0,0.35);
   }
   .mode {
-    font-size: 9px;
-    letter-spacing: 0.25em;
+    font-size: clamp(7px, 1.5vw, 9px);
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #E8A598;
-    margin-bottom: 10px;
+    margin-bottom: clamp(6px, 2vw, 10px);
     opacity: 0.75;
     transition: color 0.4s;
   }
   .mode.break { color: #58C89A; }
   .timer {
-    font-size: 54px;
+    font-size: clamp(28px, 11vw, 54px);
     font-weight: 400;
     letter-spacing: 0.06em;
     color: #F6F3EE;
     font-variant-numeric: tabular-nums;
-    margin-bottom: 18px;
+    margin-bottom: clamp(10px, 2.5vw, 18px);
     transition: color 0.4s;
     line-height: 1;
   }
   .timer.break { color: #58C89A; }
   .controls {
     display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: clamp(10px, 2.5vw, 18px);
   }
   button {
     background: none;
