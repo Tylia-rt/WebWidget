@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA Clock</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0B0E1A;
+    color: #F6F3EE;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .time {
+    font-size: 46px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+    color: #F6F3EE;
+    line-height: 1;
+  }
+  .colon {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  .date {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #E8A598;
+    opacity: 0.8;
+  }
+  .day {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246, 243, 238, 0.3);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="time" id="time">00<span class="colon">:</span>00</div>
+  <div class="date" id="date">· dim 26 juil ·</div>
+</div>
+<script>
+const JOURS = ['dim','lun','mar','mer','jeu','ven','sam'];
+const MOIS  = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+const pad   = n => String(n).padStart(2,'0');
+
+function tick() {
+  const d   = new Date();
+  const h   = pad(d.getHours());
+  const m   = pad(d.getMinutes());
+  const j   = JOURS[d.getDay()];
+  const dt  = d.getDate();
+  const mo  = MOIS[d.getMonth()];
+
+  document.getElementById('time').innerHTML =
+    `${h}<span class="colon">:</span>${m}`;
+  document.getElementById('date').textContent =
+    `· ${j} ${dt} ${mo} ·`;
+}
+
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>

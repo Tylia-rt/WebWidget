@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA Countdown</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0B0E1A;
+    color: #F6F3EE;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+  }
+  .label {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(246,243,238,0.4);
+  }
+  .number {
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: #E8A598;
+  }
+  .unit {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(232,165,152,0.55);
+  }
+  .date-str {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: rgba(246,243,238,0.25);
+    margin-top: 2px;
+  }
+  .past {
+    font-size: 11px;
+    color: #58C89A;
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="label" id="lbl">·  ·</div>
+  <div class="number" id="num">—</div>
+  <div class="unit" id="unit">jours</div>
+  <div class="date-str" id="ds"></div>
+</div>
+<script>
+const params  = new URLSearchParams(location.search);
+const target  = params.get('date') || '2026-12-31';
+const label   = params.get('label') || 'Deadline';
+const MOIS    = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+
+document.getElementById('lbl').textContent = '· ' + label + ' ·';
+
+function update() {
+  const now  = new Date();
+  const tgt  = new Date(target + 'T00:00:00');
+  const diff = Math.round((tgt - now) / 86400000);
+  const d    = tgt.getDate();
+  const mo   = MOIS[tgt.getMonth()];
+  const yr   = tgt.getFullYear();
+
+  document.getElementById('ds').textContent = d + ' ' + mo + ' ' + yr;
+
+  if (diff > 0) {
+    document.getElementById('num').textContent = diff;
+    document.getElementById('unit').textContent = diff === 1 ? 'jour' : 'jours';
+    document.getElementById('num').style.color = '#E8A598';
+  } else if (diff === 0) {
+    document.getElementById('num').textContent = '0';
+    document.getElementById('unit').textContent = "aujourd'hui";
+    document.getElementById('num').style.color = '#58C89A';
+  } else {
+    document.getElementById('num').textContent = Math.abs(diff);
+    document.getElementById('unit').textContent = 'jours passés';
+    document.getElementById('num').style.color = 'rgba(180,174,194,0.4)';
+  }
+}
+
+update();
+setInterval(update, 60000);
+</script>
+</body>
+</html>
