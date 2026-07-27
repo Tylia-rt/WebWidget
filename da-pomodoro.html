@@ -6,14 +6,9 @@
 <title>DA Pomodoro</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html {
+  html, body {
     width: 100%; height: 100%;
     background: #191919;
-  }
-  body {
-    width: 100%; height: 100%;
-    background: #0B0E1A;
-    clip-path: inset(3px round 10px);
     color: #F6F3EE;
     font-family: 'Georgia', 'Times New Roman', serif;
     display: flex;
@@ -28,25 +23,31 @@
     flex-direction: column;
     align-items: center;
     gap: 0;
-    padding: clamp(12px, 3vw, 18px) clamp(12px, 4vw, 20px);
+    padding: 18px 20px;
+    width: calc(100% - 16px);
+    max-width: 300px;
+    background: #0B0E1A;
+    border-radius: 12px;
+    border: 1px solid rgba(246,243,238,0.07);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
   }
   .mode {
-    font-size: clamp(7px, 1.5vw, 9px);
-    letter-spacing: 0.22em;
+    font-size: 9px;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: #E8A598;
-    margin-bottom: clamp(6px, 2vw, 10px);
+    margin-bottom: 10px;
     opacity: 0.75;
     transition: color 0.4s;
   }
   .mode.break { color: #58C89A; }
   .timer {
-    font-size: clamp(28px, 11vw, 54px);
+    font-size: 54px;
     font-weight: 400;
     letter-spacing: 0.06em;
     color: #F6F3EE;
     font-variant-numeric: tabular-nums;
-    margin-bottom: clamp(10px, 2.5vw, 18px);
+    margin-bottom: 18px;
     transition: color 0.4s;
     line-height: 1;
   }
@@ -56,7 +57,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 6px;
-    margin-bottom: clamp(10px, 2.5vw, 18px);
+    margin-bottom: 18px;
   }
   button {
     background: none;
@@ -115,16 +116,14 @@
   </div>
   <div class="sub" id="sub">session 1 / 4</div>
 </div>
-
 <script>
 const M = [
-  { label:'· FOCUS ·',     s:25*60, brk:false },
-  { label:'· PAUSE ·',     s:5*60,  brk:true  },
+  { label:'· FOCUS ·',        s:25*60, brk:false },
+  { label:'· PAUSE ·',        s:5*60,  brk:true  },
   { label:'· GRANDE PAUSE ·', s:20*60, brk:true  },
 ];
 let mi=0, rem=M[0].s, run=false, iv=null, done=0;
 const pad = n => n.toString().padStart(2,'0');
-
 function render(){
   const m=Math.floor(rem/60), s=rem%60;
   document.getElementById('tmr').textContent=`${pad(m)}:${pad(s)}`;
@@ -132,39 +131,18 @@ function render(){
   document.getElementById('lbl').textContent=M[mi].label;
   document.getElementById('lbl').className='mode'+(M[mi].brk?' break':'');
   document.getElementById('btn-start').textContent=run?'PAUSE':'START';
-  document.querySelectorAll('.dot').forEach((d,i)=>{
-    d.classList.toggle('done', i < done%4);
-  });
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('done', i < done%4));
   const cur = mi===0 ? (done%4)+1 : done%4;
   document.getElementById('sub').textContent=`session ${Math.min(cur,4)} / 4`;
 }
-
 function toggle(){
   if(run){ clearInterval(iv); run=false; }
-  else {
-    run=true;
-    iv=setInterval(()=>{
-      if(rem>0){ rem--; render(); }
-      else{ clearInterval(iv); run=false; next(); }
-    },1000);
-  }
+  else { run=true; iv=setInterval(()=>{ if(rem>0){rem--;render();}else{clearInterval(iv);run=false;next();}},1000); }
   render();
 }
-
-function next(){
-  if(mi===0){ done++; mi=(done%4===0)?2:1; }
-  else{ mi=0; }
-  rem=M[mi].s; render();
-}
-
-function reset(){
-  clearInterval(iv); run=false; mi=0; rem=M[0].s; done=0; render();
-}
-
-function skip(){
-  clearInterval(iv); run=false; next(); render();
-}
-
+function next(){ if(mi===0){done++;mi=(done%4===0)?2:1;}else{mi=0;} rem=M[mi].s; render(); }
+function reset(){ clearInterval(iv); run=false; mi=0; rem=M[0].s; done=0; render(); }
+function skip(){ clearInterval(iv); run=false; next(); render(); }
 render();
 </script>
 </body>
