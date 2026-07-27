@@ -6,9 +6,14 @@
 <title>DA Pomodoro</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
+  html {
     width: 100%; height: 100%;
     background: #191919;
+  }
+  body {
+    width: 100%; height: 100%;
+    background: #0B0E1A;
+    clip-path: inset(3px round 10px);
     color: #F6F3EE;
     font-family: 'Georgia', 'Times New Roman', serif;
     display: flex;
@@ -24,12 +29,6 @@
     align-items: center;
     gap: 0;
     padding: clamp(12px, 3vw, 18px) clamp(12px, 4vw, 20px);
-    width: calc(100% - 16px);
-    max-width: 300px;
-    background: #0B0E1A;
-    border-radius: 12px;
-    border: 1px solid rgba(246,243,238,0.07);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
   }
   .mode {
     font-size: clamp(7px, 1.5vw, 9px);
