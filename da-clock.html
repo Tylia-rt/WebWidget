@@ -8,19 +8,24 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     width: 100%; height: 100%;
-    background: #0B0E1A;
+    background: #191919;
     color: #F6F3EE;
     font-family: 'Georgia', 'Times New Roman', serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    scrollbar-width: none;
   }
+  ::-webkit-scrollbar { display: none; }
   .wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    padding: 12px;
+    padding: 18px 28px;
+    background: #0B0E1A;
+    border-radius: 12px;
   }
   .time {
     font-size: 46px;

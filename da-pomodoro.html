@@ -8,19 +8,24 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     width: 100%; height: 100%;
-    background: #0B0E1A;
+    background: #191919;
     color: #F6F3EE;
     font-family: 'Georgia', 'Times New Roman', serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    overflow: hidden;
+    scrollbar-width: none;
   }
+  ::-webkit-scrollbar { display: none; }
   .wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 12px;
+    gap: 0;
+    padding: 18px 20px;
+    background: #0B0E1A;
+    border-radius: 12px;
   }
   .mode {
     font-size: 9px;
@@ -105,10 +110,11 @@
   </div>
   <div class="sub" id="sub">session 1 / 4</div>
 </div>
+
 <script>
 const M = [
-  { label:'· FOCUS ·',        s:25*60, brk:false },
-  { label:'· PAUSE ·',        s:5*60,  brk:true  },
+  { label:'· FOCUS ·',     s:25*60, brk:false },
+  { label:'· PAUSE ·',     s:5*60,  brk:true  },
   { label:'· GRANDE PAUSE ·', s:20*60, brk:true  },
 ];
 let mi=0, rem=M[0].s, run=false, iv=null, done=0;
